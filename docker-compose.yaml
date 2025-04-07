@@ -1,0 +1,35 @@
+# cat docker-compose.yaml
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8080:8080"   # Web interface for Jenkins
+      - "50000:50000" # Jenkins agent communication
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Docker socket for Jenkins to access the host's Docker
+      - /usr/bin/docker:/usr/bin/docker            # Mount the Docker binary
+      - jenkins_home:/var/jenkins_home            # Persist Jenkins data
+    networks:
+      - jenkins-network
+    user: root  # Ensure Jenkins has Docker access on the host
+
+  # Uncomment this section if you need Docker-in-Docker
+  # docker:
+  #   image: docker:20.10.7-dind
+  #   container_name: docker-in-docker
+  #   privileged: true
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   networks:
+  #     - jenkins-network
+
+networks:
+  jenkins-network:
+    driver: bridge
+    external: true  # This network should be created in the other Docker Compose file
+
+volumes:
+  jenkins_home:
