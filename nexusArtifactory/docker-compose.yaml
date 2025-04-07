@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  nexus:
+    image: sonatype/nexus3:latest
+    container_name: nexus
+    ports:
+      - "8081:8081"   # Expose port 8081 for Nexus UI and API
+      - "8082:8082"
+    volumes:
+      - nexus-data:/nexus-data  # Persist Nexus data between container restarts
+    environment:
+      - NEXUS_CONTEXT=    # Optional: Set context path if needed
+#    networks:
+#      - nexus-network
+    networks:
+      - jenkins-network   # Connect to the existing external netwo
+    restart: unless-stopped
+
+volumes:
+  nexus-data:   # Named volume to persist Nexus data
+
+#networks:
+#  nexus-network:
+#    driver: bridge
+
+networks:
+  jenkins-network:
+    external: true  # Use the external network created in another Docker Compose file
