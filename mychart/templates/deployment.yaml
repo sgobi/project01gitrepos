@@ -10,13 +10,13 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: myapp #{{ .Chart.Name }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 80
+            - containerPort: 5000
       imagePullSecrets:
-          - name: my-registry-secret
+        - name: my-registry-secret
