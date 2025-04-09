@@ -10,3 +10,6 @@ kubectl get svc argocd-server -n argocd
 kubectl port-forward svc/argocd-server -n argocd --address 0.0.0.0 9090:8080
 kubectl port-forward svc/argocd-server -n argocd --address 0.0.0.0 9090:80
 curl -k https://localhost:9090
+
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
